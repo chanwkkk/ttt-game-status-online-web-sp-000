@@ -16,12 +16,12 @@ WIN_COMBINATIONS=[
 ]
 
 def won?(board)
-WIN_COMBINATIONS.each do |combo|
+WIN_COMBINATIONS.detect do |combo| # it is ok to use .each too. But #detect save much work since it only returns the first element that makes the block true
 #for each combo in WIN_COMBINATIONS do
   position_1=board[combo[0]]
   position_2=board[combo[1]]
   position_3=board[combo[2]]
-if (position_1=="X" && position_2=="X"&& position_3=="X") ||( position_1=="O" && position_2=="O" && position_3=="O")
+if position_1==position_2&& position_2==position_3 && position_taken?(board,combo[0])# make sure position is not " "
   return combo
 end
 end
@@ -35,20 +35,18 @@ end
 def draw? (board)
   if full?(board) && !won?(board)
     true
-  else false
   end
 end
 
 def over?(board)
   if won?(board) || draw?(board)
     true
-  else false
   end
 end
 
 def winner(board)
   if won?(board)
     winner=won?(board)[0]
-    return board[winner]
+    board[winner]
   end
 end
